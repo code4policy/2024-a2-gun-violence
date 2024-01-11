@@ -189,3 +189,42 @@ path.highlighted {
 .linkedin-link:hover {
     color: #005682; /* Darker blue color on hover */
 }
+
+
+/* Logo formatting */
+.logo {
+    max-width: 225px; /* Adjust the maximum width of the logo */
+    height: auto;
+}
+
+/* Container for the logo to manage spacing */
+.logo-container {
+    margin-left: 10px; /* Adjust the left margin to provide space between the text and logo */
+    position: relative;
+    top: -10px; /* Adjust as needed to align the logo vertically with the text */
+}
+
+h1 {
+    position: relative;
+    display: inline-block; /* Make the h1 a block-level element so it can contain the inline-block span */
+}
+
+body {
+    text-align: center; /* Center align content */
+}
+
+
+.no-left-margin {
+    margin-left: 0;
+}
+
+
+/* Home Header */
+.header-container {
+  text-align: center;
+}
+
+.centered-header {
+  display: inline-block;
+}
+
