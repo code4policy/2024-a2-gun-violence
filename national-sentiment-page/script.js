@@ -45,6 +45,13 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     var yAxis = d3.axisLeft(yScale)
         .tickFormat(d => d * 100 + "%");
 
+    // Create Legend
+    var legendData = [
+        { name: "More Strict", color: "green", variable: "More strict" },
+        { name: "Less Strict", color: "red", variable: "Less strict" },
+        { name: "Kept As Now", color: "grey", variable: "Kept as now" }
+    ];
+
     // Create SVG container (assign to the broader scope variable)
     svg = d3.select("#chart-container")
         .append("svg")
@@ -159,6 +166,29 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
 
 // Update tooltip position
     tip.direction('e'); // Set direction to east (right side)
+
+var legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", "translate(" + (width - 150) + "," + (height + margin.bottom - 50) + ")");
+
+legend.selectAll("rect")
+    .data(legendData)
+    .enter().append("rect")
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("x", function (d, i) { return i * 70; }) // Adjust the spacing between items
+    .style("fill", function (d) { return d.color; });
+
+legend.selectAll("text")
+    .data(legendData)
+    .enter().append("text")
+    .attr("x", function (d, i) { return i * 70 + 15; }) // Adjust the spacing between items and position the text to the right of the rectangle
+    .attr("y", 8)  // Adjust this value to align the text with the color blocks
+    .attr("dy", ".35em")
+    .style("text-anchor", "start")
+    .style("font-size", "8px") // Set the font size
+    .text(function (d) { return d.name; });
+
 
 
     // Add the lines
