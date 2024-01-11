@@ -200,9 +200,11 @@ legend.selectAll("text")
         .attr("d", lineMoreStrict)
         .attr("data-variable", "More strict") // Set variable name as a data attribute
         .on("mouseover", function (event, d) {
+            d3.select(this).classed("highlighted", true);
             tip.show.call(this, d);
         })
         .on("mouseout", function () {
+            d3.select(this).classed("highlighted", false);
             tip.hide();
         });
 
@@ -214,9 +216,11 @@ legend.selectAll("text")
         .attr("d", lineLessStrict)
         .attr("data-variable", "Less strict") // Set variable name as a data attribute
         .on("mouseover", function (event, d) {
+            d3.select(this).classed("highlighted", true);
             tip.show.call(this, d);
         })
         .on("mouseout", function () {
+            d3.select(this).classed("highlighted", false);
             tip.hide();
         });
 
@@ -228,12 +232,13 @@ legend.selectAll("text")
         .attr("d", lineKeptAsNow)
         .attr("data-variable", "Kept as now") // Set variable name as a data attribute
         .on("mouseover", function (event, d) {
+            d3.select(this).classed("highlighted", true);
             tip.show.call(this, d);
         })
         .on("mouseout", function () {
+            d3.select(this).classed("highlighted", false);
             tip.hide();
         });
-
 
     // Additional helper function to parse month string to a numeric value
     function parseMonth(month) {
