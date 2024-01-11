@@ -2,7 +2,7 @@
 /*Formatting for our page styles*/
 
 html {
-	font-size: 20px;
+	font-size: 100px;
 	font-family: 'Lato', 'Helvetica', sans-serif;
 }
 
@@ -120,8 +120,14 @@ div#chart-container {
     position: relative;
 }
 
-div #chart {
-  width: 600px;
-  height: 300px;
-  margin: 20px auto;
+#tooltip-container {
+    font-size: 6px; /* Adjust the size as needed */
+}
+
+.line-annotation {
+    font-size: 4px; /* Adjust the size as needed */
+}
+
+.d3-tip {
+    font-size: 4px; /* Adjust the size as needed */
 }
