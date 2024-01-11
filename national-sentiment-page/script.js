@@ -1,8 +1,15 @@
-d3.csv("images/cleaned_table_1.csv").then(function(data) {
+// Declare svg variable in a broader scope
+var svg;
+var lineMoreStrict, lineLessStrict, lineKeptAsNow;
+
+
+// Load data from CSV file
+d3.csv("images/cleaned_table_1.csv").then(function (data) {
     // Convert string values to numbers
-    data.forEach(function(d) {
+    data.forEach(function (d) {
         d.year = +d.year;
         d.month = d.month.trim();
+        d.date = new Date(d.year, parseMonth(d.month), 1);
         d["More strict"] = +d["More strict"];
         d["Less strict"] = +d["Less strict"];
         d["Kept as now"] = +d["Kept as now"];
@@ -10,40 +17,64 @@ d3.csv("images/cleaned_table_1.csv").then(function(data) {
     });
 
     // Set up margins and dimensions
-    var margin = { top: 20, right: 20, bottom: 50, left: 50 };
+    var margin = { top: 100, right: 20, bottom: 100, left: 50 };
     var width = 800 - margin.left - margin.right;
     var height = 400 - margin.top - margin.bottom;
 
     // Create scales and axes
-    var xScale = d3.scaleLinear()
-        .domain([d3.min(data, d => d.year), d3.max(data, d => d.year)])
-        .range([0, width]);
+    var xScale = d3.scaleTime()
+        .domain([d3.min(data, d => d.date), d3.max(data, d => d.date)])
+        .range([0, width])
+        console.log("xScale domain:", xScale.domain());
+
 
     var yScale = d3.scaleLinear()
-        .domain([0, 100]) // Adjust the domain based on your data
+        .domain([0, 1])
         .range([height, 0]);
 
-    var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
-    var yAxis = d3.axisLeft(yScale).tickFormat(d => d + "%");
+// Create X-axis
+    var xAxis = d3.axisBottom(xScale)
+        .tickFormat(d3.timeFormat("%Y-%b"));
 
-    // Create SVG container
-    var svg = d3.select("#chart-container")
+// Set tick values explicitly
+    var tickValues = xScale.ticks(d3.timeYear.every(5));
+        tickValues.push(xScale.domain()[1]);  // Add the last date to tick values
+
+        xAxis.tickValues(tickValues);
+
+    var yAxis = d3.axisLeft(yScale)
+        .tickFormat(d => d * 100 + "%");
+
+    // Create SVG container (assign to the broader scope variable)
+    svg = d3.select("#chart-container")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + margin.left + margin.right+50)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// Add title
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .style("font-weight", "bold")
+        .text("National Opinion on Gun Control Laws After Major School Shootings");
+
+    svg.append("text")
+        .attr("x", margin.left)
+        .attr("y", height + margin.bottom / 2)
+        .attr("text-anchor", "left")
+        .style("font-size", "10px")
+        .text("Source: Gallup Poll; Created by Alice Shao with the help of ChatGPT");
+
 
     // Add X and Y axes
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .append("text")
-        .attr("x", width / 2)
-        .attr("y", margin.bottom - 10)
-        .attr("text-anchor", "middle")
-        .text("Year");
+        .call(xAxis);
 
     svg.append("g")
         .attr("class", "y axis")
@@ -54,110 +85,144 @@ d3.csv("images/cleaned_table_1.csv").then(function(data) {
         .attr("x", -height / 2)
         .attr("dy", "1em")
         .attr("text-anchor", "middle")
-        .text("Percent");
+        .text("Percentage");
 
-    // Create the line functions
-    var lineMoreStrict = d3.line()
-        .x(d => xScale(d.year))
-        .y(d => yScale(d["More strict"] * 100));
+       lineMoreStrict = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScale(d["More strict"]));
 
-    var lineLessStrict = d3.line()
-        .x(d => xScale(d.year))
-        .y(d => yScale(d["Less strict"] * 100));
+    lineLessStrict = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScale(d["Less strict"]));
 
-    var lineKeptAsNow = d3.line()
-        .x(d => xScale(d.year))
-        .y(d => yScale(d["Kept as now"] * 100));
+    lineKeptAsNow = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScale(d["Kept as now"]));
+    // Add vertical lines and text annotations based on dates
+    var verticalLines = [
+    { date: "1999-04-20", annotation: "Columbine" },
+    { date: "2018-02-14", annotation: "Parkland" },
+    { date: "2012-12-14", annotation: "Sandy Hook" },
+    { date: "2022-05-24", annotation: "Uvalde" }
+    ]; 
 
-    var lineNoOpinion = d3.line()
-        .x(d => xScale(d.year))
-        .y(d => yScale(d["No opinion"] * 100));
+    verticalLines.forEach(function (line) {
+        var lineDate = new Date(line.date);
+        var xPos = xScale(lineDate);
 
-    // Draw the lines
-    svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 2)
-        .attr("d", lineMoreStrict);
+    // Add vertical line
+    svg.append("line")
+        .attr("class", "vertical-line")
+        .attr("x1", xPos)
+        .attr("x2", xPos)
+        .attr("y1", 0)
+        .attr("y2", height)
+        .attr("stroke", "black")
+        .attr("stroke-dasharray", "4");
 
+    // Add text annotation
+    svg.append("text")
+        .attr("class", "line-annotation")
+        .attr("x", xPos)
+        .attr("y", -margin.top/3)
+        .attr("text-anchor", "middle")
+        .text(line.annotation);
+});
+    // Define the tooltip
+// Define the tooltip
+    var tip = d3.tip()
+        .attr("class", "d3-tip")
+        .offset([0, 20])
+        .html(function (d) {
+            var hoveredVariable = this.getAttribute("data-variable");
+
+            var percentValue = "N/A";
+            var rawValue = "N/A";
+
+            if (hoveredVariable === "More strict") {
+                percentValue = (d["More strict"] !== undefined ? (d["More strict"] * 100).toFixed(2) + "%" : "N/A");
+                rawValue = d["More strict"];
+                } else if (hoveredVariable === "Less strict") {
+                percentValue = (d["Less strict"] !== undefined ? (d["Less strict"] * 100).toFixed(2) + "%" : "N/A");
+                rawValue = d["Less strict"];
+            } else if (hoveredVariable === "Kept as now") {
+                percentValue = (d["Kept as now"] !== undefined ? (d["Kept as now"] * 100).toFixed(2) + "%" : "N/A");
+                rawValue = d["Kept as now"];
+            }
+
+            return "Year: " + d.year + "<br>Month: " + d.month +
+                "<br>" + hoveredVariable + ": " + percentValue + " (" + rawValue + ")";
+    });
+
+// Call the tooltip on the SVG container
+    svg.call(tip);
+
+// Update tooltip position
+    tip.direction('e'); // Set direction to east (right side)
+
+
+    // Add the lines
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "green")
         .attr("stroke-width", 2)
-        .attr("d", lineLessStrict);
-
-    svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "orange")
-        .attr("stroke-width", 2)
-        .attr("d", lineKeptAsNow);
+        .attr("d", lineMoreStrict)
+        .attr("data-variable", "More strict") // Set variable name as a data attribute
+        .on("mouseover", function (event, d) {
+            tip.show.call(this, d);
+        })
+        .on("mouseout", function () {
+            tip.hide();
+        });
 
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "red")
         .attr("stroke-width", 2)
-        .attr("d", lineNoOpinion);
+        .attr("d", lineLessStrict)
+        .attr("data-variable", "Less strict") // Set variable name as a data attribute
+        .on("mouseover", function (event, d) {
+            tip.show.call(this, d);
+        })
+        .on("mouseout", function () {
+            tip.hide();
+        });
 
-    // Add legend
-    var legend = svg.append("g")
-        .attr("class", "legend")
-        .attr("transform", "translate(" + (width - 100) + "," + 0 + ")");
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "grey")
+        .attr("stroke-width", 2)
+        .attr("d", lineKeptAsNow)
+        .attr("data-variable", "Kept as now") // Set variable name as a data attribute
+        .on("mouseover", function (event, d) {
+            tip.show.call(this, d);
+        })
+        .on("mouseout", function () {
+            tip.hide();
+        });
 
-    legend.append("rect")
-        .attr("y", 0)
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", "steelblue");
 
-    legend.append("text")
-        .attr("x", 15)
-        .attr("y", 5)
-        .text("More Strict");
-
-    legend.append("rect")
-        .attr("y", 20)
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", "green");
-
-    legend.append("text")
-        .attr("x", 15)
-        .attr("y", 25)
-        .text("Less Strict");
-
-    legend.append("rect")
-        .attr("y", 40)
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", "orange");
-
-    legend.append("text")
-        .attr("x", 15)
-        .attr("y", 45)
-        .text("Kept as Now");
-
-    legend.append("rect")
-        .attr("y", 60)
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", "red");
-
-    legend.append("text")
-        .attr("x", 15)
-        .attr("y", 65)
-        .text("No Opinion");
-
-    // Add title
-    svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", 0 - (margin.top / 2))
-        .attr("text-anchor", "middle")
-        .style("font-size", "18px")
-        .text("In general, do you feel that the laws covering the sale of the firearms \n should be made more strict, les strict, or kept as they are now?");
+    // Additional helper function to parse month string to a numeric value
+    function parseMonth(month) {
+        var months = {
+            "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
+            "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11
+        };
+        return months[month];
+    }
 });
+// Create container for tooltip with ID
+var tooltipContainer = svg.append("g")
+    .attr("class", "tooltip-container")
+    .attr("id", "tooltip-container") // Add this line
+    .style("display", "none");
 
+// Position the tooltip container to the right
+tooltipContainer.attr("transform", "translate(" + (width + margin.right) + "," + 0 + ")");
+// Update the y-position for the X-axis label
+svg.select(".x.axis text")
+    .attr("y", margin.bottom - 10);
 

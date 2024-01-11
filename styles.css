@@ -2,7 +2,7 @@
 /*Formatting for our page styles*/
 
 html {
-	font-size: 20px;
+	font-size: 100px;
 	font-family: 'Lato', 'Helvetica', sans-serif;
 }
 
@@ -124,65 +124,4 @@ div #chart {
   width: 600px;
   height: 300px;
   margin: 20px auto;
-}
-
-
-/* Formatting for Our Team... */
-
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(40px, 1fr));
-    gap: 30px;
-    justify-content: center;
-    margin: 0.5in 2in;
-}
-
-.team-member {
-    text-align: center;
-    border: 2px solid #333; /* Thicker, darker border */
-    padding: 20px;
-    width: calc(100% - 40px);
-    box-sizing: border-box;
-    border-radius: 12px; /* Subtle rounding effect */
-    transition: border-color 0.3s ease-in-out; /* Smooth transition for border color change */
-    position: relative;
-}
-
-.team-member:hover {
-    border-color: #555; /* Darker border color on hover */
-}
-
-.member-photo img {
-    max-width: 80%;
-    height: auto;
-    border-radius: 5px; /* Slightly rounded corners */
-    aspect-ratio: 1/1;
-}
-
-.member-info {
-    display: none; /* Initially hide the member info */
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: left;
-}
-
-.team-member:hover .member-info {
-    display: block; /* Show member info on hover */
-}
-
-.linkedin-link {
-    color: #0077b5; /* LinkedIn blue color */
-    text-decoration: none;
-    transition: color 0.3s ease-in-out; /* Smooth transition for link color change */
-}
-
-.linkedin-link:hover {
-    color: #005682; /* Darker blue color on hover */
 }
