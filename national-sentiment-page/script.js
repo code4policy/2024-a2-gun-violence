@@ -102,7 +102,8 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     var verticalLines = [
     { date: "1999-04-20", annotation: "Columbine" },
     { date: "2018-02-14", annotation: "Parkland" },
-    { date: "2012-12-14", annotation: "Sandy Hook" }
+    { date: "2012-12-14", annotation: "Sandy Hook" },
+    { date: "2022-05-24", annotation: "Uvalde" }
     ]; 
 
     verticalLines.forEach(function (line) {
