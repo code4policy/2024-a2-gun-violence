@@ -20,6 +20,11 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     var margin = { top: 100, right: 20, bottom: 100, left: 50 };
     var width = 800 - margin.left - margin.right;
     var height = 400 - margin.top - margin.bottom;
+    var averageMoreStrict = d3.mean(data, function (d) { return d["More strict"]; });
+    var averageLessStrict = d3.mean(data, function (d) { return d["Less strict"]; });
+    var averageKeptAsNow = d3.mean(data, function (d) { return d["Kept as now"]; });
+
+
 
     // Create scales and axes
     var xScale = d3.scaleTime()
@@ -135,6 +140,34 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
         .attr("text-anchor", "middle")
         .text(line.annotation);
 });
+
+// Create dashed lines for averages
+    svg.append("line")
+        .attr("class", "average-line")
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", yScale(averageMoreStrict))
+        .attr("y2", yScale(averageMoreStrict))
+        .attr("stroke", "green")
+        .attr("stroke-dasharray", "4");
+
+    svg.append("line")
+        .attr("class", "average-line")
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", yScale(averageLessStrict))
+        .attr("y2", yScale(averageLessStrict))
+        .attr("stroke", "red")
+        .attr("stroke-dasharray", "4");
+
+    svg.append("line")
+        .attr("class", "average-line")
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", yScale(averageKeptAsNow))
+        .attr("y2", yScale(averageKeptAsNow))
+        .attr("stroke", "grey")
+        .attr("stroke-dasharray", "4");
     // Define the tooltip
 // Define the tooltip
     var tip = d3.tip()
@@ -149,18 +182,32 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
             if (hoveredVariable === "More strict") {
                 percentValue = (d["More strict"] !== undefined ? (d["More strict"] * 100).toFixed(2) + "%" : "N/A");
                 rawValue = d["More strict"];
-                } else if (hoveredVariable === "Less strict") {
+        }   else if (hoveredVariable === "Less strict") {
                 percentValue = (d["Less strict"] !== undefined ? (d["Less strict"] * 100).toFixed(2) + "%" : "N/A");
                 rawValue = d["Less strict"];
-            } else if (hoveredVariable === "Kept as now") {
+        }   else if (hoveredVariable === "Kept as now") {
                 percentValue = (d["Kept as now"] !== undefined ? (d["Kept as now"] * 100).toFixed(2) + "%" : "N/A");
                 rawValue = d["Kept as now"];
-            }
+        }
+
+        // Include average values in the tooltip
+            var averageText = "Average: N/A";
+            if (hoveredVariable === "More strict") {
+                averageText = "Average: " + (averageMoreStrict * 100).toFixed(2) + "%";
+        }   else if (hoveredVariable === "Less strict") {
+                averageText = "Average: " + (averageLessStrict * 100).toFixed(2) + "%";
+        }   else if (hoveredVariable === "Kept as now") {
+                averageText = "Average: " + (averageKeptAsNow * 100).toFixed(2) + "%";
+        }
 
             return "Year: " + d.year + "<br>Month: " + d.month +
-                "<br>" + hoveredVariable + ": " + percentValue + " (" + rawValue + ")";
+                "<br>" + hoveredVariable + ": " + percentValue + " (" + rawValue + ")" +
+                "<br>" + averageText;
     });
 
+    tip.style("font-family", "Lato, sans-serif")
+        .style("font-size", "10px")
+        .style("color", "black");
 // Call the tooltip on the SVG container
     svg.call(tip);
 
