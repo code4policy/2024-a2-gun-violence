@@ -2,6 +2,7 @@
 var svg;
 var lineMoreStrict, lineLessStrict, lineKeptAsNow;
 
+
 // Load data from CSV file
 d3.csv("images/cleaned_table_1.csv").then(function (data) {
     // Convert string values to numbers
@@ -16,7 +17,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     });
 
     // Set up margins and dimensions
-    var margin = { top: 20, right: 20, bottom: 50, left: 50 };
+    var margin = { top: 100, right: 20, bottom: 100, left: 50 };
     var width = 800 - margin.left - margin.right;
     var height = 400 - margin.top - margin.bottom;
 
@@ -51,6 +52,23 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// Add title
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .style("font-weight", "bold")
+        .text("National Opinion on Gun Control Laws After Major School Shootings");
+
+    svg.append("text")
+        .attr("x", margin.left)
+        .attr("y", height + margin.bottom / 2)
+        .attr("text-anchor", "left")
+        .style("font-size", "10px")
+        .text("Source: Gallup Poll; Created by Alice Shao with the help of ChatGPT");
+
 
     // Add X and Y axes
     svg.append("g")
@@ -146,7 +164,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "steelblue")
+        .attr("stroke", "green")
         .attr("stroke-width", 2)
         .attr("d", lineMoreStrict)
         .attr("data-variable", "More strict") // Set variable name as a data attribute
@@ -160,7 +178,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "green")
+        .attr("stroke", "red")
         .attr("stroke-width", 2)
         .attr("d", lineLessStrict)
         .attr("data-variable", "Less strict") // Set variable name as a data attribute
@@ -174,7 +192,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "orange")
+        .attr("stroke", "grey")
         .attr("stroke-width", 2)
         .attr("d", lineKeptAsNow)
         .attr("data-variable", "Kept as now") // Set variable name as a data attribute
@@ -206,3 +224,4 @@ tooltipContainer.attr("transform", "translate(" + (width + margin.right) + "," +
 // Update the y-position for the X-axis label
 svg.select(".x.axis text")
     .attr("y", margin.bottom - 10);
+
