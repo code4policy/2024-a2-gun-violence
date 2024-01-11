@@ -111,6 +111,13 @@ img {
   display: none;
 }
 
+
+.axis text {
+    font-size: 14px; /* Adjust the font size as needed */
+}
+
+
+
 div#chart-container {
     width: 100vw;
     height: 80vh;
@@ -189,3 +196,20 @@ path.highlighted {
 .linkedin-link:hover {
     color: #005682; /* Darker blue color on hover */
 }
+
+.bar {
+    fill: steelblue; /* Default bar color */
+    transition: fill 0.3s; /* Smooth transition for color change */
+}
+
+.bar:hover {
+    fill: orange; /* Highlight color on hover */
+}
+
+/* Ensure the SVG container fits well within the layout */
+svg {
+    display: block;
+    margin: auto;
+    max-width: 100%; /* Ensures SVG is responsive and fits the container */
+}
+/* You might want to adjust the width and height in the JavaScript to match your layout needs */
