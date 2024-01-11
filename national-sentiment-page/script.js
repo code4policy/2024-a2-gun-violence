@@ -1,10 +1,14 @@
-/// Load data from CSV file
+// Declare svg variable in a broader scope
+var svg;
+var lineMoreStrict, lineLessStrict, lineKeptAsNow;
+
+// Load data from CSV file
 d3.csv("images/cleaned_table_1.csv").then(function (data) {
     // Convert string values to numbers
     data.forEach(function (d) {
         d.year = +d.year;
         d.month = d.month.trim();
-        d.date = new Date(d.year, parseMonth(d.month), 1); // Assuming month is 1-indexed
+        d.date = new Date(d.year, parseMonth(d.month), 1);
         d["More strict"] = +d["More strict"];
         d["Less strict"] = +d["Less strict"];
         d["Kept as now"] = +d["Kept as now"];
@@ -18,23 +22,32 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
 
     // Create scales and axes
     var xScale = d3.scaleTime()
-        .domain(d3.extent(data, d => d.date))
-        .range([0, width]);
+        .domain([d3.min(data, d => d.date), d3.max(data, d => d.date)])
+        .range([0, width])
+        console.log("xScale domain:", xScale.domain());
+
 
     var yScale = d3.scaleLinear()
-        .domain([0, 1]) // Assuming percentages are between 0 and 1
+        .domain([0, 1])
         .range([height, 0]);
 
+// Create X-axis
     var xAxis = d3.axisBottom(xScale)
-        .tickFormat(d3.timeFormat("%Y-%b")); // Format for year and abbreviated month
+        .tickFormat(d3.timeFormat("%Y-%b"));
+
+// Set tick values explicitly
+    var tickValues = xScale.ticks(d3.timeYear.every(5));
+        tickValues.push(xScale.domain()[1]);  // Add the last date to tick values
+
+        xAxis.tickValues(tickValues);
 
     var yAxis = d3.axisLeft(yScale)
-        .tickFormat(d => d * 100 + "%"); // Format ticks as percentages
+        .tickFormat(d => d * 100 + "%");
 
-    // Create SVG container
-    var svg = d3.select("#chart-container")
+    // Create SVG container (assign to the broader scope variable)
+    svg = d3.select("#chart-container")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + margin.left + margin.right+50)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -43,12 +56,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .append("text")
-        .attr("x", width / 2)
-        .attr("y", margin.bottom - 10)
-        .attr("text-anchor", "middle")
-        .text("Year and Month");
+        .call(xAxis);
 
     svg.append("g")
         .attr("class", "y axis")
@@ -61,24 +69,22 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
         .attr("text-anchor", "middle")
         .text("Percentage");
 
-    // Create the line functions
-    var lineMoreStrict = d3.line()
+       lineMoreStrict = d3.line()
         .x(d => xScale(d.date))
         .y(d => yScale(d["More strict"]));
 
-    var lineLessStrict = d3.line()
+    lineLessStrict = d3.line()
         .x(d => xScale(d.date))
         .y(d => yScale(d["Less strict"]));
 
-    var lineKeptAsNow = d3.line()
+    lineKeptAsNow = d3.line()
         .x(d => xScale(d.date))
         .y(d => yScale(d["Kept as now"]));
-
     // Add vertical lines and text annotations based on dates
     var verticalLines = [
-    { date: "1999-04-20", annotation: "Columbine Shooting" },
-    { date: "2018-02-14", annotation: "Parkland Shooting" },
-    { date: "2012-12-14", annotation: "Sandy Hook Shooting" }
+    { date: "1999-04-20", annotation: "Columbine" },
+    { date: "2018-02-14", annotation: "Parkland" },
+    { date: "2012-12-14", annotation: "Sandy Hook" }
     ]; 
 
     verticalLines.forEach(function (line) {
@@ -200,6 +206,3 @@ tooltipContainer.attr("transform", "translate(" + (width + margin.right) + "," +
 // Update the y-position for the X-axis label
 svg.select(".x.axis text")
     .attr("y", margin.bottom - 10);
-
-// Update the y-position for the tooltip
-tip.offset([-10, 0]); // Adjust the offset to ensure the tooltip is not covered by the line
