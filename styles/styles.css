@@ -126,6 +126,9 @@ div #chart {
   margin: 20px auto;
 }
 
+path.highlighted {
+    stroke-width: 4;
+}
 
 /* Formatting for Our Team... */
 
