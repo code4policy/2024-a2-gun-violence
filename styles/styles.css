@@ -111,6 +111,13 @@ img {
   display: none;
 }
 
+
+.axis text {
+    font-size: 14px; /* Adjust the font size as needed */
+}
+
+
+
 div#chart-container {
     width: 100vw;
     height: 80vh;
@@ -190,6 +197,23 @@ path.highlighted {
     color: #005682; /* Darker blue color on hover */
 }
 
+/* sentiment-histogram */
+.bar {
+    fill: steelblue; /* Default bar color */
+    transition: fill 0.3s; /* Smooth transition for color change */
+}
+
+.bar:hover {
+    fill: orange; /* Highlight color on hover */
+}
+
+/* Ensure the SVG container fits well within the layout */
+svg {
+    display: block;
+    margin: auto;
+    max-width: 100%; /* Ensures SVG is responsive and fits the container */
+}
+
 
 /* Logo formatting */
 .logo {
@@ -227,4 +251,3 @@ body {
 .centered-header {
   display: inline-block;
 }
-
