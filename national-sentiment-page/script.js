@@ -204,7 +204,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     });
 
     tip.style("font-family", "Lato, sans-serif")
-        .style("font-size", "10px")
+        .style("font-size", "14px")
         .style("color", "black");
 // Call the tooltip on the SVG container
     svg.call(tip);
@@ -228,10 +228,10 @@ legend.selectAll("text")
     .data(legendData)
     .enter().append("text")
     .attr("x", function (d, i) { return i * 70 + 15; }) // Adjust the spacing between items and position the text to the right of the rectangle
-    .attr("y", 8)  // Adjust this value to align the text with the color blocks
+    .attr("y", 10)  // Adjust this value to align the text with the color blocks
     .attr("dy", ".35em")
     .style("text-anchor", "start")
-    .style("font-size", "8px") // Set the font size
+    .style("font-size", "10px") // Set the font size
     .text(function (d) { return d.name; });
 
 
