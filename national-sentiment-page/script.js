@@ -79,7 +79,18 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
         .attr("y", height + margin.bottom / 2)
         .attr("text-anchor", "left")
         .style("font-size", "10px")
-        .text("Source: Gallup Poll; Created by Alice Shao with the help of ChatGPT");
+        .style("font-color", "blue")
+        .html("Source: <a class = 'blue-link' href = 'https://news.gallup.com/poll/1645/guns.aspx'</a> Gallup Poll" );
+
+    svg.append("text")
+    .attr("x", margin.left)
+    .attr("y", height + margin.bottom / 2 + 15) // Adjust the y-coordinate for proper spacing
+    .attr("text-anchor", "left")
+    .style("font-size", "10px")
+    .text("Created by Alice Shao with the help of ChatGPT");
+
+    svg.append("style")
+    .text(".blue-link { fill: blue; text-decoration: underline; }");
 
 
     // Add X and Y axes
