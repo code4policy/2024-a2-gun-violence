@@ -284,3 +284,10 @@ ul, li {
 .nav-link {
     margin: 0;
 }
+
+
+.last-updated i {
+    font-size: 14px; /* Adjust size as needed */
+    color: grey; /* Adjust color as needed */
+}
+
