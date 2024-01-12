@@ -263,6 +263,14 @@ ul, li {
     margin-right: 40px;
 }
 
+/* Set twitter margin */
+.twitter-tweet {
+    margin: 20px;
+    display: block; /* Ensure block display for margin to take effect */
+    max-width: 100%; /* Adjust max-width if needed */
+}
+
+
 /* Reset margin for all elements within the navbar */
 .navbar.navbar-expand-lg.navbar-dark.bg-dark {
     margin: 0;
