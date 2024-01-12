@@ -254,6 +254,7 @@ h1 {
 /* Topics Dropdown */
 #topics-dropdown {
     width: 200px; /* Adjust the width as needed */
+    margin: 60px;
 }
 
 /* Set margins for headers, paragraphs, lists, and list items */
@@ -293,4 +294,10 @@ ul, li {
 .last-updated i {
     font-size: 14px; /* Adjust size as needed */
     color: grey; /* Adjust color as needed */
+}
+
+
+#csvTable {
+    width: 1500px;
+    margin: 60px;
 }
