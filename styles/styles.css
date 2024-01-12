@@ -294,3 +294,30 @@ ul, li {
     font-size: 14px; /* Adjust size as needed */
     color: grey; /* Adjust color as needed */
 }
+
+
+/* Our Team responsive text sizing and spacing */
+.team-member {
+    margin: 0; /* Remove left and right margins */
+}
+
+.team-member .member-info {
+    font-size: 0.9rem;
+    padding: 8px;
+}
+
+.team-member .member-info h3 {
+    font-size: 1.2em;
+    margin-bottom: 0px; /* Adjusted margin between header and text */
+}
+
+.team-member .member-info p,
+.team-member .member-info ul,
+.team-member .member-info li {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+    text-align: left;
+}
+
+
+
