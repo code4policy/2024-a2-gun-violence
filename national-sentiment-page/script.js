@@ -30,7 +30,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
     var xScale = d3.scaleTime()
         .domain([d3.min(data, d => d.date), d3.max(data, d => d.date)])
         .range([0, width])
-        console.log("xScale domain:", xScale.domain());
+ ;
 
 
     var yScale = d3.scaleLinear()
@@ -200,9 +200,7 @@ d3.csv("images/cleaned_table_1.csv").then(function (data) {
                 averageText = "Average: " + (averageKeptAsNow * 100).toFixed(2) + "%";
         }
 
-            return "Year: " + d.year + "<br>Month: " + d.month +
-                "<br>" + hoveredVariable + ": " + percentValue + " (" + rawValue + ")" +
-                "<br>" + averageText;
+            return averageText;
     });
 
     tip.style("font-family", "Lato, sans-serif")
