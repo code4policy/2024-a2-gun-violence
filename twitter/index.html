@@ -2,9 +2,12 @@
 <html>
     <head>
         <title>Perspectives</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link href="../styles/styles.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+
+        <!-- Logo -->
+        <link rel="icon" href="../gun_hub_logo.ico" type="image/x-icon">
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -14,9 +17,11 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-      <meta charset="utf-8">
+        <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="styles.css">
         <script src="https://d3js.org/d3.v6.min.js"></script>
+
+       
 
     </head>
     <body>
@@ -49,9 +54,7 @@
       </header>
 
         <h1>Key Themes (Synthesized Perspectives)</h1>
-            <p> Placeholder for text analysis on <a href="https://www.nytimes.com/2024/01/04/us/perry-iowa-school-shooting.html#commentsContainer" target="_blank"> NYT</a> and <a href="https://www.foxnews.com/us/police-investigating-active-shooter-scene-high-school-perry-iowa" target="_blank">Fox News</a> article comments</p>
-
-
+           
             <h2> What comments are people leaving on multiple platforms? </h2>
    
                 <p> We looked at multiple sources to ensure diversity: <p/>
@@ -66,18 +69,18 @@
                     </ul>
 
 
-
+            <h4> Graph representing the percentage of comments (excl. "other" category) falling into each of the main topics, by source </h4>
 
             <div id="chart"></div>
             <script src="script.js"></script>
       
     
-
-
         <br>
         <br>
 
         <h1>Unfiltered Perspectives</h1>
+
+           
             <h2>Relevant Tweets</h2>
                 <p> Click "Read replies" below to get a sense of citizens' moods and opinions following the Governor's first online comments after the Perry shooting <p/>
                 <!-- Updated code with Twitter embed link -->
@@ -86,10 +89,18 @@
                 <p> <i> Tip: for additional perspectives, try searching key phrases like "Perry shooting" or browse comments on Governor Reynolds' other posts regarding the shooting</i> </p>
 
         <br>
+             <h2>View main topics and select comments</h2>
+                    <p> After systematically synthesizing themes from comments on articles written by liberal and conservative media outlets, as well as social media, we pulled out a few unfiltered quotes that highlight themes we examined. These represent popular sentiment in plain, sometimes strong, language. <p/>
+                <select id="topics-dropdown">
+                    <option value="" disabled selected>Choose topic</option>
+                </select>
+                <p> Scroll below to read selected comments: </p>
 
-        <h2>Article Comments</h2>
-            <p> After systematically synthesizing themes from comments on articles written by both "<a href="https://www.nytimes.com/2024/01/04/us/perry-iowa-school-shooting.html#commentsContainer" target="_blank">liberal</a>" and "<a href="https://www.foxnews.com/us/police-investigating-active-shooter-scene-high-school-perry-iowa" target="_blank">conservative</a>" media outlets, we pulled out a few unfiltered quotes that highlight themes we examined. These represent popular sentiment in plain, sometimes strong, language. <p/>
-            <p/> Placeholder for the quote highlights <p/>
+              <!-- Placeholder for the bullet point list of comments -->
+                <div id="commentsListContainer">
+                    <ul id="commentsList"></ul>
+                </div>
 
+         <br>
     </body>
 </html>

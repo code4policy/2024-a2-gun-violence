@@ -87,11 +87,11 @@ img {
 
 /* Formatting for D3 bar-charts */
 
-/*.chart-container {
+.chart-container {
 	display: block;
 	padding-top: 20px;
 	padding-bottom: 20px;
-}	*/
+}
 
 .chart-heading {
 	font-size: 22px;
@@ -121,10 +121,11 @@ img {
 
 
 
-div#chart-container {
+
+#chart-container {
     width: 100vw;
     height: 80vh;
-    margin: 20px auto;
+    margin: 20px auto 0px; /* Adjust the bottom margin value as needed */
     border: none;
     outline: none;
     position: relative;
@@ -251,6 +252,11 @@ h1 {
   display: inline-block;
 }
 
+/* Topics Dropdown */
+#topics-dropdown {
+    width: 200px; /* Adjust the width as needed */
+    margin: 60px;
+}
 
 /* Set margins for headers, paragraphs, lists, and list items */
 h1, h2, h3, h4, p {
@@ -283,4 +289,39 @@ ul, li {
 .nav-item,
 .nav-link {
     margin: 0;
+}
+
+
+.last-updated i {
+    font-size: 14px; /* Adjust size as needed */
+    color: grey; /* Adjust color as needed */
+}
+
+/* CSV Table */
+#csvTable {
+    width: 1500px;
+    margin: 60px;
+}
+
+/* Our Team responsive text sizing and spacing */
+.team-member {
+    margin: 0; /* Remove left and right margins */
+}
+
+.team-member .member-info {
+    font-size: 0.9rem;
+    padding: 8px;
+}
+
+.team-member .member-info h3 {
+    font-size: 1.2em;
+    margin-bottom: 0px; /* Adjusted margin between header and text */
+}
+
+.team-member .member-info p,
+.team-member .member-info ul,
+.team-member .member-info li {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+    text-align: left;
 }

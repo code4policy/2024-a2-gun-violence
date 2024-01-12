@@ -94,4 +94,57 @@ d3.csv('Topic-histogram.csv').then(function(data) {
       .attr("y", 9.5)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
+
+
 });
+
+// Function to generate HTML list from CSV data based on selected topic
+function generateListFromCSV(csvFile) {
+    d3.csv(csvFile).then(function(data) {
+        populateDropdown(data);
+
+        // Function to update the comments list based on the dropdown selection
+        function updateCommentsList(selectedTopic) {
+            if (!selectedTopic) {
+                document.getElementById("commentsList").style.display = "none";
+                return;
+            }
+
+            // Filter data based on the selected topic
+            let filteredData = data.filter(row => row.Topic2 === selectedTopic);
+
+            // Generate list items for each comment
+            let listItemsHtml = filteredData.map(row => `<li>${row.Comment}</li>`).join('');
+
+            let list = document.getElementById("commentsList");
+            list.innerHTML = listItemsHtml;
+            list.style.display = "block"; // Show the list
+        }
+
+        // Listen for changes in the dropdown and update the comments list
+        document.getElementById("topics-dropdown").addEventListener("change", function() {
+            updateCommentsList(this.value);
+        });
+
+        // Initially hide the list
+        document.getElementById("commentsList").style.display = "none";
+    });
+}
+
+// Function to populate dropdown with unique topics
+function populateDropdown(data) {
+    let dropdown = document.getElementById("topics-dropdown");
+    let uniqueTopics = new Set(data.map(row => row.Topic2)); // Assuming 'Topic2' is the correct column name
+
+    uniqueTopics.forEach(topic => {
+        if (topic) { // Check if topic is not empty or undefined
+            let option = document.createElement("option");
+            option.value = topic;
+            option.textContent = topic;
+            dropdown.appendChild(option);
+        }
+    });
+}
+
+// Call the function to prepare the dropdown and the comments list
+generateListFromCSV('selected_comments_2.csv');
