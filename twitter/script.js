@@ -94,4 +94,6 @@ d3.csv('Topic-histogram.csv').then(function(data) {
       .attr("y", 9.5)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
+
+
 });
