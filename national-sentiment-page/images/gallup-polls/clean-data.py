@@ -4,6 +4,10 @@ import pandas as pd
 input_file = '../table_1.csv'
 df = pd.read_csv(input_file)
 
+
+# Remove rows where any column has the value "%,%,%"
+df = df[~df.apply(lambda row: any('%' in str(cell) for cell in row), axis=1)]
+
 # Extract year and date from the first column
 df[['year', 'month']] = df.iloc[:, 0].str.extract(r'(\d{4})\s([^\d]+)')
 
